@@ -1,0 +1,13 @@
+{
+  "exclude": {
+    "startsWith": [
+      "Cannot access member",
+      "Operator \"+\" not supported for types",
+      "Expression of type \"CharField\" cannot be assigned to return type \"str\""
+    ],
+    "contains": []
+  },
+  "ignore": [
+    "reportMissingImports"
+  ]
+}

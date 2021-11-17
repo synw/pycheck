@@ -1,0 +1,20 @@
+{
+  "useLibraryCodeForTypes": true,
+  "reportGeneralTypeIssues": false,
+  "reportMissingImports": false,
+  "reportMissingTypeStubs": false,
+  "strictSetInference": true,
+  "strictDictionaryInference": true,
+  "strictListInference": true,
+  "reportUntypedFunctionDecorator": false,
+  "reportUntypedClassDecorator": false,
+  "reportIncompatibleMethodOverride": false,
+  "reportIncompatibleVariableOverride": false,
+  "reportUninitializedInstanceVariable": false,
+  "reportUnknownParameterType": false,
+  "reportUnknownVariableType": false,
+  "reportUnnecessaryCast": "warning",
+  "reportUnnecessaryComparison": "warning",
+  "reportMissingModuleSource": false,
+  "reportUnboundVariable": false
+}

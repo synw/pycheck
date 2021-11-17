@@ -1,0 +1,29 @@
+{
+  "name": "pycheck",
+  "version": "0.0.1",
+  "description": "An opinionated code quality checker for Python",
+  "main": "src/index.ts",
+  "license": "MIT",
+  "scripts": {
+    "debug": "ts-node src/index.ts",
+    "dev": "yarn run ts-node src/index.ts",
+    "build": "tsc -p ."
+  },
+  "dependencies": {
+    "chalk": "^4.1.2"
+  },
+  "devDependencies": {
+    "@types/node": "^16.9.1",
+    "tslib": "^2.3.1",
+    "typescript": "^4.4.3",
+    "ts-node": "^10.2.1"
+  },
+  "bin": {
+    "main": "build/index.js"
+  },
+  "pkg": {
+    "scripts": "build/**/*.js",
+    "assets": "build/conf/presets/**/*.json",
+    "outputPath": "dist"
+  }
+}
