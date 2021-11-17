@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import Project from "./models/project";
 import { pwd } from "./commands";
 import { argv } from "process";
