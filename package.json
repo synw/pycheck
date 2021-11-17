@@ -1,8 +1,8 @@
 {
   "name": "pycheck",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An opinionated code quality checker for Python",
-  "main": "src/index.ts",
+  "main": "bin/index.js",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -26,13 +26,11 @@
     "typescript": "^4.4.3",
     "ts-node": "^10.2.1"
   },
+  "files": [
+    "bin"
+  ],
   "bin": {
-    "pycheck": "build/index.js"
-  },
-  "pkg": {
-    "scripts": "build/**/*.js",
-    "assets": "build/conf/presets/**/*.json",
-    "outputPath": "dist"
+    "pycheck": "bin/index.js"
   },
   "preferGlobal": true
 }
