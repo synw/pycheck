@@ -53,5 +53,47 @@ Some presets options are available for the level of checks:
 Example with options:
 
 ```
-pycheck -s --untyped /my/python/dir
+pycheck -s --untyped
+```
+
+Example output:
+
+```
+Using preset untyped
+Checking formating with Black ...
+Checking codestyle with Flake8 ...
+Checking typing with Pyright ...
+
+-----------------------
+☢️  Found some problems:
+-----------------------
+
+🔴 (3) sandbox/settings/tests.py
+  - 1: F403 'from sandbox.settings.base import *' used; unable to detect undefined names
+  - 14: F405 'join' may be undefined, or defined from star imports: sandbox.settings.base
+  - 19: F405 'VAR_PATH' may be undefined, or defined from star imports: sandbox.settings.base
+🔴 (2) docs/conf.py
+  - 1: E402 module level import not at top of file
+  - 1: E402 module level import not at top of file
+🔴 (5) docs/django_settings.py
+  - 1: F401 'os.listdir' imported but unused
+  - 1: F401 'os.path.normpath' imported but unused
+  - 1: E402 module level import not at top of file
+  - 1: F403 'from demospa.settings import *' used; unable to detect undefined names
+  - 1: F401 'demospa.settings.*' imported but unused
+🔴 (1) sandbox/settings/demo.py
+  - 1: F403 'from sandbox.settings.base import *' used; unable to detect undefined names
+🔵 (4) sandbox/settings/tests.py
+  - 11: "join" is not defined (reportUndefinedVariable)
+  - 11: "VAR_PATH" is not defined (reportUndefinedVariable)
+  - 18: "join" is not defined (reportUndefinedVariable)
+  - 18: "VAR_PATH" is not defined (reportUndefinedVariable)
+🔵 (2) sandbox/settings/demo.py
+  - 12: "join" is not defined (reportUndefinedVariable)
+  - 12: "VAR_PATH" is not defined (reportUndefinedVariable)
+⚫ 25 files could be formated
+Code score: 68/100
+  - Formating: 0/10
+  - Codestyle: 44/60
+  - Typing: 24/30
 ```
