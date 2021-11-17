@@ -15,8 +15,6 @@ tools, shows the problems and generates a note for the code. Checks:
 ```bash
 # install the python packages
 pip install black flake8 pyright
-# clone
-git clone git@git.emencia.net:greg/pycheck.git
 ```
 
 Install Pycheck:
@@ -56,24 +54,4 @@ Example with options:
 
 ```
 pycheck -s --untyped /my/python/dir
-```
-
-## Run in dev mode
-
-Install the requirements: 
-
-```
-yarn add --global typescript ts-node
-```
-
-Cd in the directory and install the dependencies:
-
-```
-yarn install
-```
-
-Run:
-
-```
-yarn dev /my/python/dir
 ```
