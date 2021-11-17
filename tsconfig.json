@@ -9,8 +9,8 @@
     "esModuleInterop": true,
     "allowJs": true,
     "lib": [
-      "esnext",
-      "dom"
+      "ES2015",
+      "ESNext"
     ],
     "types": [
       "node",
@@ -18,15 +18,15 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "lib/*"
       ]
     },
-    "outDir": "build",
+    "outDir": "bin",
     "declaration": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.json",
+    "lib/**/*.ts",
+    "lib/**/*.d.ts",
+    "lib/**/*.json",
   ]
 }
