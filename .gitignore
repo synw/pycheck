@@ -6,4 +6,4 @@ dist-ssr
 *.local
 yarn.lock
 /dev
-/build
+/bin
