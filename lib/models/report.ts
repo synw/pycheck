@@ -45,9 +45,6 @@ export default class PyCheckReport {
   private _calculateScore() {
     for (const k of Object.keys(this.files)) {
       const file = this.files[k];
-      if (file.hasBlackViolations) {
-        this._decrementFormatingScore(file.blackViolations.size);
-      }
       if (file.hasFlake8Violations) {
         this._decrementCodestyleViolations(file.flake8Violations.size);
       }
@@ -55,6 +52,8 @@ export default class PyCheckReport {
         this._decrementTypingViolations(file.pyrightErrors.size);
       }
     }
+    const totalFiles = Object.keys(this.files).length;
+    this.formatingScore = this._calcFormatingScore(this.numBlackViolations, totalFiles);
   }
 
   private _colorizeScore(score: number): string {
@@ -71,6 +70,10 @@ export default class PyCheckReport {
       s = colors.c90(s)
     }
     return s;
+  }
+
+  private _calcFormatingScore(numViolations: number, totalFiles: number): number {
+    return Math.trunc((numViolations / 100) * totalFiles);
   }
 
   private _decrementCodestyleViolations(numViolations: number) {
