@@ -42,6 +42,7 @@ Available options:
 - `-s`: display suggestions about how to resolve the problems
 - `-v`: will display more info (the list of files to format)
 - `--debug`: print the commands
+- `--disable-typing`: an option to not run the Pyright checks, just Flake and Black
 
 ## Presets
 
