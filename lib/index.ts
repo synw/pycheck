@@ -11,6 +11,7 @@ async function main() {
   let isDebug = false;
   let useSuggestions = false;
   let preset: string | undefined;
+  let disableTyping = false;
   if (argv.length > 2) {
     for (const arg of argv.slice(2, argv.length)) {
       // parse args
@@ -30,6 +31,9 @@ async function main() {
         case "-s":
           useSuggestions = true;
           break;
+        case "--disable-typing":
+          disableTyping = true;
+          break;
         default:
           dirpath = arg;
       }
@@ -37,7 +41,7 @@ async function main() {
   } else {
     dirpath = await pwd();
   }
-  const proj = await Project.fromFolder(dirpath, isDebug, preset);
+  const proj = await Project.fromFolder(dirpath, disableTyping, isDebug, preset);
   console.log("Project", (proj.name));
   if (preset) {
     console.log(`Using preset ${preset}`)
@@ -53,8 +57,10 @@ async function main() {
   if (proj.hasPyrightConf) {
     confMsg = `using ${proj.name}/${proj.pyrightConfig.replace(proj.basePath, "")} `
   }
-  console.log(`Checking typing with Pyright ${confMsg}...`)
-  await proj.pyright();
+  if (disableTyping === false) {
+    console.log(`Checking typing with Pyright ${confMsg}...`)
+    await proj.pyright();
+  }
   // final report
   if (proj.report.hasMajorProblems) {
 
