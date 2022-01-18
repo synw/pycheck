@@ -98,18 +98,11 @@ async function main() {
       }
     }
     // black
-    const bv = proj.report.numBlackViolations;
-    if (bv > 0) {
-      console.log(`⚫ ${bv} file${bv > 1 ? 's' : ''} could be formated${isVerbose ? ':' : ''}`);
-      if (isVerbose) {
-        for (const k of Object.keys(proj.report.files)) {
-          const file = proj.report.files[k];
-          for (const v of file.blackViolations) {
-            console.log("   " + v.filepath)
-          }
-        }
-      }
+    if (proj.report.numBlackViolations > 0) {
+      proj.report.printFormatingSummary(isVerbose);
     }
+  } else if (proj.report.numBlackViolations > 0) {
+    proj.report.printFormatingSummary(isVerbose);
   } else {
     console.log("✔️  All checks passed")
   }

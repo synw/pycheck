@@ -53,6 +53,18 @@ export default class PyCheckReport {
     }
   }
 
+  printFormatingSummary(isVerbose: boolean) {
+    console.log(`⚫ ${this.numBlackViolations}/${this.totalFilesBlackProcessed} file${this.numBlackViolations > 1 ? 's' : ''} could be formated${isVerbose ? ':' : ''}`);
+    if (isVerbose) {
+      for (const k of Object.keys(this.files)) {
+        const file = this.files[k];
+        for (const v of file.blackViolations) {
+          console.log("   " + v.filepath)
+        }
+      }
+    }
+  }
+
   private _calculateScore() {
     for (const k of Object.keys(this.files)) {
       const file = this.files[k];
@@ -93,7 +105,11 @@ export default class PyCheckReport {
     if (numViolations === this.totalFilesBlackProcessed) {
       return 0
     }
-    return Math.round(((numViolations / this.totalFilesBlackProcessed) * 100) / 10);
+    const rawScore = ((this.totalFilesBlackProcessed - numViolations) / this.totalFilesBlackProcessed) * 100 / 10
+    if (Math.trunc(rawScore) == 9) {
+      return 9
+    }
+    return Math.round(rawScore);
   }
 
   private _decrementCodestyleViolations(numViolations: number) {
