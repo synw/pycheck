@@ -19,21 +19,22 @@ export default class Project {
   output: Set<string> = new Set();
   basePath: string = "";
   packages: Set<string> = new Set();
-  report: PyCheckReport = new PyCheckReport();
   pyrightConfig = this.basePath + "pyrightconfig.json";
   hasPyrightConf = false;
   exclusionRules = new PyCheckExclusionRules();
+  report: PyCheckReport;
 
 
-  private constructor(path: string, name: string, dirs: Set<string>, files: Set<string>, isDebug: boolean) {
+  private constructor(path: string, name: string, dirs: Set<string>, files: Set<string>, disableTyping: boolean, isDebug: boolean) {
     this.name = name;
     this.dirs = dirs;
     this.files = files;
     this.basePath = path;
     this.isDebug = isDebug;
+    this.report = new PyCheckReport(disableTyping);
   }
 
-  static async fromFolder(dirpath: string, isDebug: boolean = false, preset?: string): Promise<Project> {
+  static async fromFolder(dirpath: string, disableTyping: boolean, isDebug: boolean = false, preset?: string): Promise<Project> {
     let path = dirpath;
     if (dirpath === ".") {
       path = await pwd();
@@ -48,7 +49,7 @@ export default class Project {
     if (!p.endsWith("/")) {
       p = p + "/"
     }
-    const proj = new Project(p, name, dirs, files, isDebug);
+    const proj = new Project(p, name, dirs, files, disableTyping, isDebug);
     let confPath = proj.basePath;
     // console.log("PRESET", preset)
     if (preset) {
@@ -68,7 +69,7 @@ export default class Project {
   }
 
   static empty(): Project {
-    return new Project(".", "Searching ...", new Set(), new Set(), true);
+    return new Project(".", "Searching ...", new Set(), new Set(), false, true);
   }
 
   async pyright(): Promise<Set<PyrightViolation>> {
@@ -125,8 +126,12 @@ export default class Project {
     await execute(cmd, {
       onError: (err) => {
         //console.log("ERRFOUND 1", err);
-        for (const line of err.stderr.split("\n")) {
+        let i = 1;
+        const lines = err.stderr.split("\n");
+        const nlines = lines.length;
+        for (const line of lines) {
           if (line == "") {
+            i++;
             continue
           }
           if (line.startsWith("would reformat")) {
@@ -138,7 +143,28 @@ export default class Project {
             }
             this.report.files[filepath].blackViolations.add(v)
           }
+          //console.log(i, nlines, line);
+          if ((i + 1) === nlines) {
+            // get the total files analyzed from the last line
+            ///console.log("LL", line)
+            if (line.includes("unchanged")) {
+              // has unchanged files
+              const l = line.split(",");
+              const toFormat = parseInt(l[0].trim().split(" ")[0])
+              const unchanged = parseInt(l[1].trim().split(" ")[0])
+              this.report.totalFilesBlackProcessed = toFormat + unchanged
+            } else {
+              // no unchanged files
+              this.report.totalFilesBlackProcessed = parseInt(line.split(" ")[0])
+            }
+            // console.log("Total formated:", this.report.totalFilesBlackProcessed)
+          }
+          i++;
         }
+      },
+      onStdErr: (err) => {
+        //console.log("END", err)
+        this.report.totalFilesBlackProcessed = parseInt(err.split("\n")[1].split(" ")[0])
       }
     });
     return violations;

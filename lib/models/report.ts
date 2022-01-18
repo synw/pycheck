@@ -7,6 +7,12 @@ export default class PyCheckReport {
   formatingScore = 10;
   codestyleScore = 60;
   typingScore = 30;
+  totalFilesBlackProcessed = 0;
+  disableTyping: boolean;
+
+  constructor(disableTyping: boolean) {
+    this.disableTyping = disableTyping;
+  }
 
   get score(): number {
     this._calculateScore();
@@ -39,21 +45,27 @@ export default class PyCheckReport {
     console.log(`Code score: ${chalk.bold(this._colorizeScore(this.score) + '/100')}`);
     console.log(`  - Formating: ${this.formatingScore}/10`);
     console.log(`  - Codestyle: ${this.codestyleScore}/60`);
-    console.log(`  - Typing: ${this.typingScore}/30`);
+    if (this.disableTyping) {
+      const extra = this.disableTyping ? " (disabled)" : "";
+      console.log(chalk.dim(`  - Typing: ${this.typingScore}/30${extra}`));
+    } else {
+      console.log(`  - Typing: ${this.typingScore}/30`);
+    }
   }
 
   private _calculateScore() {
     for (const k of Object.keys(this.files)) {
       const file = this.files[k];
-      if (file.hasBlackViolations) {
-        this._decrementFormatingScore(file.blackViolations.size);
-      }
       if (file.hasFlake8Violations) {
         this._decrementCodestyleViolations(file.flake8Violations.size);
       }
       if (file.hasPyrightViolations) {
         this._decrementTypingViolations(file.pyrightErrors.size);
       }
+    }
+    this.formatingScore = this._calcFormatingScore(this.numBlackViolations);
+    if (this.disableTyping) {
+      this.typingScore = 0;
     }
   }
 
@@ -71,6 +83,17 @@ export default class PyCheckReport {
       s = colors.c90(s)
     }
     return s;
+  }
+
+  private _calcFormatingScore(numViolations: number): number {
+    //console.log("NV", numViolations, "/ T:", this.totalFilesBlackProcessed)
+    if (numViolations === 0) {
+      return 10
+    }
+    if (numViolations === this.totalFilesBlackProcessed) {
+      return 0
+    }
+    return Math.round(((numViolations / this.totalFilesBlackProcessed) * 100) / 10);
   }
 
   private _decrementCodestyleViolations(numViolations: number) {
@@ -99,16 +122,5 @@ export default class PyCheckReport {
       }
     }
     this.typingScore = s;
-  }
-
-  private _decrementFormatingScore(numViolations: number) {
-    let s = this.formatingScore;
-    if (this.formatingScore > 0) {
-      s = s - numViolations;
-      if (s < 0) {
-        s = 0;
-      }
-    }
-    this.formatingScore = s;
   }
 }
