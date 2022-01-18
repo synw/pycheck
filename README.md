@@ -1,5 +1,7 @@
 # Pycheck
 
+[![npm package](https://img.shields.io/npm/v/pycheck)](https://www.npmjs.com/package/pycheck)
+
 An opinionated code quality checker for Python. Pycheck runs some code checking
 tools, shows the problems and generates a note for the code. Checks:
 
