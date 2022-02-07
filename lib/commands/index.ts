@@ -1,13 +1,15 @@
-import execute from "./execute";
+import { executeSync } from "./execute";
 import { flakeIgnore } from "../const";
 
 async function pwd(): Promise<string> {
-  const lines = await execute(`pwd`);
+  const lines = await executeSync(`pwd`);
+  //console.log("PWD res", lines)
   return String(lines[0])
 }
 
 async function lsl(dirpath: string): Promise<Record<string, Set<string>>> {
-  const lines = await execute(`ls -l ${dirpath}`);
+  const lines = await executeSync(`ls -l ${dirpath}`);
+  //console.log("LSL res", lines.length, lines)
   const files = new Set<string>();
   const dirs = new Set<string>();
   lines.forEach((item) => {
@@ -38,7 +40,7 @@ async function findPackages(dirpath: string, dircontent: Set<string>): Promise<S
 }
 
 /*async function ls(dirname: string = "."): Promise<Set<string>> {
-  const lines = await execute(`ls ${dirname}`);
+  const lines = await executeSync(`ls ${dirname}`);
   return new Set<string>(lines)
 }*/
 

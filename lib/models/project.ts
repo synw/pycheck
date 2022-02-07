@@ -1,5 +1,5 @@
 import Flake8Violation from "./flake";
-import execute from "../commands/execute";
+import { execute, executeSync } from "../commands/execute";
 import { flakeIgnore, libDir } from "../const";
 import { findPackages, lsl, pwd } from "../commands";
 import BlackViolation from "./black";
@@ -77,41 +77,38 @@ export default class Project {
     //console.log("Packages:", packages)
     const violations = new Set<PyrightViolation>();
     for (const p of this.packages) {
-      const cmd = `pyright --outputjson --lib -p ${this.pyrightConfig} ${this.basePath}${p}`;
+      const cmd = "pyright";
+      const args = ["--outputjson", "--lib", "-p", this.pyrightConfig, `${this.basePath}${p}`]
       if (this.isDebug) {
-        console.log(cmd)
+        console.log(cmd, args.join(" "))
       }
-      await execute(cmd, {
-        onError: (err) => {
-          //console.log("PRY ERR", err)
-          const res = JSON.parse(err.stdout);
-          for (const diagnostic of res.generalDiagnostics) {
-            const v = PyrightViolation.fromDiagnostic(this.basePath, diagnostic);
-            if (this.exclusionRules.hasRules) {
-              if (this.exclusionRules.isMsgExcluded(v.message)) {
-                continue;
-              }
-              if (this.exclusionRules.isErrorExcluded(v.rule)) {
-                // console.log("IS EX", v.rule, this.exclusionRules.isErrorExcluded(v.rule))
-                continue
-              }
-            }
-            if (!(v.filepath in this.report.files)) {
-              this.report.files[v.filepath] = new PyCheckFileReport(v.filepath)
-            }
-            switch (v.severity) {
-              case "error":
-                this.report.files[v.filepath].pyrightErrors.add(v);
-                break;
-              case "warning":
-                this.report.files[v.filepath].pyrightWarnings.add(v);
-                break;
-              case "information":
-                this.report.files[v.filepath].pyrightInfos.add(v);
-            }
+      const resp = await executeSync(cmd, args, { onStderr: (e) => null })
+      const res = JSON.parse(resp.join("\n"));
+      for (const diagnostic of res.generalDiagnostics) {
+        const v = PyrightViolation.fromDiagnostic(this.basePath, diagnostic);
+        if (this.exclusionRules.hasRules) {
+          if (this.exclusionRules.isMsgExcluded(v.message)) {
+            continue;
+          }
+          if (this.exclusionRules.isErrorExcluded(v.rule)) {
+            // console.log("IS EX", v.rule, this.exclusionRules.isErrorExcluded(v.rule))
+            continue
           }
         }
-      })
+        if (!(v.filepath in this.report.files)) {
+          this.report.files[v.filepath] = new PyCheckFileReport(v.filepath)
+        }
+        switch (v.severity) {
+          case "error":
+            this.report.files[v.filepath].pyrightErrors.add(v);
+            break;
+          case "warning":
+            this.report.files[v.filepath].pyrightWarnings.add(v);
+            break;
+          case "information":
+            this.report.files[v.filepath].pyrightInfos.add(v);
+        }
+      }
     }
     return violations;
   }
@@ -119,15 +116,17 @@ export default class Project {
   async black(): Promise<Set<BlackViolation>> {
     const violations = new Set<BlackViolation>();
     const exclude = `--extend-exclude='/*\/migrations/*|setup.py'`
-    const cmd = `black --check --skip-string-normalization ${exclude} ${this.basePath}`;
+    const args = ["--check", "--skip-string-normalization", exclude, this.basePath];
+    const cmd = "black";
     if (this.isDebug) {
-      console.log(cmd)
+      console.log(cmd, args.join(" "))
     }
-    await execute(cmd, {
-      onError: (err) => {
+    await executeSync(cmd, args, {
+      onError: (err) => console.log("SERR", err),
+      onStderr: (err) => {
         //console.log("ERRFOUND 1", err);
         let i = 1;
-        const lines = err.stderr.split("\n");
+        const lines = err.toString().split("\n");
         const nlines = lines.length;
         for (const line of lines) {
           if (line == "") {
@@ -162,25 +161,27 @@ export default class Project {
           i++;
         }
       },
-      onStdErr: (err) => {
-        //console.log("END", err)
-        this.report.totalFilesBlackProcessed = parseInt(err.split("\n")[1].split(" ")[0])
-      }
     });
     return violations;
   }
 
   async flake8(): Promise<Set<Flake8Violation>> {
-    const opts = `--extend-exclude=${flakeIgnore.join(',')} --format='%(path)s|%(row)d,%(col)d|%(code)s|%(text)s'`;
-    const cmd = `cd ${this.basePath} && flake8 . ${opts}`;
+    //const opts = `--extend-exclude=${flakeIgnore.join(',')} --format='%(path)s|%(row)d,%(col)d|%(code)s|%(text)s'`;
+    const cmd = "flake8";
+    const args = [
+      this.basePath,
+      `--extend-exclude=${flakeIgnore.join(',')}`,
+      "--format='%(path)s|%(row)d,%(col)d|%(code)s|%(text)s'"
+    ];
     if (this.isDebug) {
-      console.log(cmd)
+      console.log(cmd, args.join(" "))
     }
     const violations = new Set<Flake8Violation>();
-    await execute(cmd, {
-      onError: (err) => {
-        //console.log("ERRFOUND", err.stdout);
-        for (const line of err.stdout.split("\n")) {
+    await execute(cmd, args, {
+      //onStdout: (d) => console.log("OUT", d),
+      //onStderr: (d) => console.log("ERR", d),
+      onStdout: (err) => {
+        for (const line of err.split("\n")) {
           if (line == "") {
             continue
           }

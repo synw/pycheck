@@ -1,30 +1,52 @@
-'use strict';
-const util = require('util');
-const _exec = util.promisify(require('child_process').exec);
+import { spawn } from "child_process";
 
-export default async function execute(
-  cmd: string,
-  { onError = (err: any): void => { throw err },
-    onStdErr = (err: any): void => { }
+async function executeSync(
+  command: string,
+  args: Array<string> = [],
+  {
+    onStderr = (data: any): void => { },
+    onError = (data: any): void => { },
   } = {
-      onError: (err: any): void => { throw err },
-      onStdErr: (err: any): void => { }
+      onStderr: (data) => console.log("stderr:", data),
+      onError: (err) => { if (err) throw err },
     },
 ): Promise<Array<string>> {
-  let res: Array<string> = [];
-  try {
-    const { stdout, stderr } = await _exec(cmd);
-    if (stderr) {
-      //console.log("STDERR", stderr)
-      onStdErr(stderr);
-      return res;
-    }
-    if (stdout) {
-      res = stdout.split("\n")
-    }
-  } catch (e) {
-    // console.log("CMD ERR")
-    onError(e)
-  }
-  return res;
+  let buffer = "";
+  let child = spawn(command, args, { shell: true });
+  child.stdout.setEncoding('utf8');
+  child.stdout.on('data', (data: any) => buffer += data);
+  child.stderr.setEncoding('utf8');
+  child.stderr.on('data', (data: any) => onStderr(data));
+  child.on("error", (data: any) => onError(data));
+  let finish: (value: unknown) => void;
+  let end = new Promise((r) => finish = r);
+  child.on('close', () => finish(true));
+  await end
+  return buffer.split("\n")
 }
+
+function execute(
+  command: string,
+  args: Array<string> = [],
+  { onStdout = (data: any): void => { },
+    onStderr = (data: any): void => { },
+    onError = (data: any): void => { },
+    onFinished = (): void => { },
+  } = {
+      onStdout: (data) => console.log("stdout:", data),
+      onStderr: (data) => console.log("stderr:", data),
+      onError: (err) => { if (err) throw err },
+      onFinished: (): void => { },
+    },
+): () => boolean {
+  var child = spawn(command, args);
+  child.stdout.setEncoding('utf8');
+  child.stdout.on('data', (data: any) => onStdout(data));
+  child.stderr.setEncoding('utf8');
+  child.stderr.on('data', (data: any) => onStderr(data));
+  child.on("error", (data: any) => onError(data));
+  child.on('close', () => onFinished());
+  return () => child.kill()
+}
+
+export { execute, executeSync }
