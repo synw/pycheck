@@ -146,7 +146,7 @@ export default class Project {
           if ((i + 1) === nlines) {
             // get the total files analyzed from the last line
             ///console.log("LL", line)
-            if (line.includes("unchanged")) {
+            if (line.includes("reformatted")) {
               // has unchanged files
               const l = line.split(",");
               const toFormat = parseInt(l[0].trim().split(" ")[0])
