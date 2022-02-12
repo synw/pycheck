@@ -1,6 +1,6 @@
 import { spawn } from "child_process";
 
-async function executeSync(
+async function execute(
   command: string,
   args: Array<string> = [],
   {
@@ -25,7 +25,7 @@ async function executeSync(
   return buffer.split("\n")
 }
 
-function execute(
+function run(
   command: string,
   args: Array<string> = [],
   { onStdout = (data: any): void => { },
@@ -49,4 +49,4 @@ function execute(
   return () => child.kill()
 }
 
-export { execute, executeSync }
+export { execute, run }

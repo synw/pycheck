@@ -1,5 +1,5 @@
 import Flake8Violation from "./flake";
-import { execute, executeSync } from "../commands/execute";
+import { execute } from "../commands/execute";
 import { flakeIgnore, libDir } from "../const";
 import { findPackages, lsl, pwd } from "../commands";
 import BlackViolation from "./black";
@@ -82,7 +82,7 @@ export default class Project {
       if (this.isDebug) {
         console.log(cmd, args.join(" "))
       }
-      const resp = await executeSync(cmd, args, { onStderr: (e) => null })
+      const resp = await execute(cmd, args, { onStderr: (e) => null })
       const res = JSON.parse(resp.join("\n"));
       for (const diagnostic of res.generalDiagnostics) {
         const v = PyrightViolation.fromDiagnostic(this.basePath, diagnostic);
@@ -121,7 +121,7 @@ export default class Project {
     if (this.isDebug) {
       console.log(cmd, args.join(" "))
     }
-    await executeSync(cmd, args, {
+    await execute(cmd, args, {
       onError: (err) => console.log("SERR", err),
       onStderr: (err) => {
         //console.log("ERRFOUND 1", err);
@@ -166,7 +166,6 @@ export default class Project {
   }
 
   async flake8(): Promise<Set<Flake8Violation>> {
-    //const opts = `--extend-exclude=${flakeIgnore.join(',')} --format='%(path)s|%(row)d,%(col)d|%(code)s|%(text)s'`;
     const cmd = "flake8";
     const args = [
       this.basePath,
@@ -177,31 +176,26 @@ export default class Project {
       console.log(cmd, args.join(" "))
     }
     const violations = new Set<Flake8Violation>();
-    await execute(cmd, args, {
-      //onStdout: (d) => console.log("OUT", d),
-      //onStderr: (d) => console.log("ERR", d),
-      onStdout: (err) => {
-        for (const line of err.split("\n")) {
-          if (line == "") {
-            continue
-          }
-          const l = line.split("|");
-          const code = l[2];
-          const msg = l[3];
-          const filepath = l[0].replace("./", "");
-          const n = l[1].split(",");
-          const col = parseInt(n[1]);
-          const row = parseInt(n[0]);
-          const v = new Flake8Violation(filepath, code, msg, col, row);
-          violations.add(v);
-          if (!(filepath in this.report.files)) {
-            // console.log('Add', filepath)
-            this.report.files[filepath] = new PyCheckFileReport(filepath)
-          }
-          this.report.files[filepath].flake8Violations.add(v);
-        }
+    const res = await execute(cmd, args);
+    for (const line of res) {
+      if (line == "") {
+        continue
       }
-    });
+      const l = line.split("|");
+      const code = l[2];
+      const msg = l[3];
+      const filepath = l[0].replace("./", "");
+      const n = l[1].split(",");
+      const col = parseInt(n[1]);
+      const row = parseInt(n[0]);
+      const v = new Flake8Violation(filepath, code, msg, col, row);
+      violations.add(v);
+      if (!(filepath in this.report.files)) {
+        // console.log('Add', filepath)
+        this.report.files[filepath] = new PyCheckFileReport(filepath)
+      }
+      this.report.files[filepath].flake8Violations.add(v);
+    }
     return violations
   }
 
