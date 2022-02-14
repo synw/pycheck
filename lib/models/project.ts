@@ -165,13 +165,23 @@ export default class Project {
     return violations;
   }
 
-  async flake8(): Promise<Set<Flake8Violation>> {
+  async flake8({ maxLineLength, configFile }: {
+    maxLineLength?: number,
+    configFile?: string,
+  } = {}): Promise<Set<Flake8Violation>> {
     const cmd = "flake8";
     const args = [
       this.basePath,
       `--extend-exclude=${flakeIgnore.join(',')}`,
       "--format='%(path)s|%(row)d,%(col)d|%(code)s|%(text)s'"
     ];
+    if (maxLineLength) {
+      args.push(`--max-line-length=${maxLineLength}`)
+    }
+    if (configFile) {
+      const confPath = this.basePath + "/" + configFile
+      args.push(`--config=${confPath}`)
+    }
     if (this.isDebug) {
       console.log(cmd, args.join(" "))
     }
