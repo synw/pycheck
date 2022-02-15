@@ -34,7 +34,7 @@ export default class Project {
     this.report = new PyCheckReport(disableTyping);
   }
 
-  static async fromFolder(dirpath: string, disableTyping: boolean, isDebug: boolean = false, preset?: string): Promise<Project> {
+  static async fromFolder(dirpath: string, disableTyping: boolean, isDebug: boolean = false, preset?: string, libPath?: string): Promise<Project> {
     let path = dirpath;
     if (dirpath === ".") {
       path = await pwd();
@@ -51,12 +51,17 @@ export default class Project {
     }
     const proj = new Project(p, name, dirs, files, disableTyping, isDebug);
     let confPath = proj.basePath;
-    // console.log("PRESET", preset)
+    console.log("PRESET", preset);
+    console.log("LIBPATH", libPath);
     if (preset) {
       if (!presets.includes(preset)) {
         throw new Error(`Unknown preset ${preset}`);
       }
-      confPath = libDir + "/conf/presets/" + preset + "/";
+      if (libPath) {
+        confPath = libPath + "/conf/presets/" + preset + "/";
+      } else {
+        confPath = libDir + "/conf/presets/" + preset + "/";
+      }
       proj.preset = preset;
     }
     const [hasConf, conf] = readConf(confPath);
@@ -64,7 +69,7 @@ export default class Project {
     if (hasConf) {
       proj.exclusionRules = PyCheckExclusionRules.fromConfig(conf)
     }
-    proj.pyrightConfig = proj._pyrightConfig();
+    proj.pyrightConfig = proj._pyrightConfig(libPath);
     return proj;
   }
 
@@ -83,6 +88,7 @@ export default class Project {
         console.log(cmd, args.join(" "))
       }
       const resp = await execute(cmd, args, { onStderr: (e) => null })
+      //console.log("RESP TO PARSE", resp)
       const res = JSON.parse(resp.join("\n"));
       for (const diagnostic of res.generalDiagnostics) {
         const v = PyrightViolation.fromDiagnostic(this.basePath, diagnostic);
@@ -100,13 +106,13 @@ export default class Project {
         }
         switch (v.severity) {
           case "error":
-            this.report.files[v.filepath].pyrightErrors.add(v);
+            this.report.files[v.filepath].pyrightErrors.push(v);
             break;
           case "warning":
-            this.report.files[v.filepath].pyrightWarnings.add(v);
+            this.report.files[v.filepath].pyrightWarnings.push(v);
             break;
           case "information":
-            this.report.files[v.filepath].pyrightInfos.add(v);
+            this.report.files[v.filepath].pyrightInfos.push(v);
         }
       }
     }
@@ -140,7 +146,8 @@ export default class Project {
             if (!(filepath in this.report.files)) {
               this.report.files[filepath] = new PyCheckFileReport(filepath)
             }
-            this.report.files[filepath].blackViolations.add(v)
+            //console.log("Adding black violation", JSON.stringify(v, null, "  "))
+            this.report.files[filepath].blackViolations = true
           }
           //console.log(i, nlines, line);
           if ((i + 1) === nlines) {
@@ -204,19 +211,24 @@ export default class Project {
         // console.log('Add', filepath)
         this.report.files[filepath] = new PyCheckFileReport(filepath)
       }
-      this.report.files[filepath].flake8Violations.add(v);
+      //console.log("Adding Flake violation", v)
+      this.report.files[filepath].flake8Violations.push(v);
     }
     return violations
   }
 
-  private _pyrightConfig(): string {
+  private _pyrightConfig(libPath?: string): string {
+    let p = libDir;
+    if (libPath) {
+      p = libPath;
+    }
     if (this.preset !== null) {
-      return libDir + "/conf/presets/" + this.preset + "/pyrightconfig.json"
+      return p + "/conf/presets/" + this.preset + "/pyrightconfig.json"
     }
     if (this.files.has("pyrightconfig.json")) {
       this.hasPyrightConf = true;
       return this.basePath + "pyrightconfig.json"
     }
-    return libDir + "/conf/presets/default/pyrightconfig.json"
+    return p + "/conf/presets/default/pyrightconfig.json"
   }
 }

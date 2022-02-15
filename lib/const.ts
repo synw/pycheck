@@ -25,6 +25,9 @@ const colors: Record<string, chalk.Chalk> = {
   c100: chalk.hex("#059669")
 }
 
-const libDir = __dirname;
+let libDir = "";
+try {
+  libDir = __dirname
+} catch (e) { }
 
 export { flakeIgnore, colors, libDir }

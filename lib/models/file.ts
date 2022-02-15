@@ -6,26 +6,26 @@ import { PyrightViolation } from "./pyright";
 
 export default class PyCheckFileReport {
   filepath: string;
-  blackViolations: Set<BlackViolation> = new Set();
-  flake8Violations: Set<Flake8Violation> = new Set();
-  pyrightErrors: Set<PyrightViolation> = new Set();
-  pyrightWarnings: Set<PyrightViolation> = new Set();
-  pyrightInfos: Set<PyrightViolation> = new Set();
+  blackViolations: boolean = false;
+  flake8Violations: Array<Flake8Violation> = [];
+  pyrightErrors: Array<PyrightViolation> = [];
+  pyrightWarnings: Array<PyrightViolation> = [];
+  pyrightInfos: Array<PyrightViolation> = [];
 
   constructor(filepath: string) {
     this.filepath = filepath;
   }
 
   get hasBlackViolations(): boolean {
-    return this.blackViolations.size > 0;
+    return this.blackViolations === true;
   }
 
   get hasFlake8Violations(): boolean {
-    return this.flake8Violations.size > 0;
+    return this.flake8Violations.length > 0;
   }
 
   get hasPyrightViolations(): boolean {
-    return this.pyrightErrors.size > 0;
+    return this.pyrightErrors.length > 0;
   }
 
   get flake8ViolationCodes(): Set<string> {
@@ -64,7 +64,7 @@ export default class PyCheckFileReport {
 
   pyrightSummary() {
     let s = "";
-    const pv = this.pyrightErrors.size;
+    const pv = this.pyrightErrors.length;
     if (pv > 0) {
       s += `🔵 (${pv})`
     }
@@ -73,7 +73,7 @@ export default class PyCheckFileReport {
 
   flake8Summary() {
     let s = "";
-    const fv = this.flake8Violations.size;
+    const fv = this.flake8Violations.length;
     if (fv > 0) {
       s += `🔴 (${fv})`
     }

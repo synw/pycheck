@@ -61,6 +61,7 @@ async function main() {
     console.log(`Checking typing with Pyright ${confMsg}...`)
     await proj.pyright();
   }
+  proj.report.calculateScore();
   // final report
   if (proj.report.hasMajorProblems) {
 

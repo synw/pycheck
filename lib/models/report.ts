@@ -8,6 +8,7 @@ export default class PyCheckReport {
   codestyleScore = 60;
   typingScore = 30;
   totalFilesBlackProcessed = 0;
+  numBlackViolations: number = 0;
   disableTyping: boolean;
 
   constructor(disableTyping: boolean) {
@@ -15,7 +16,6 @@ export default class PyCheckReport {
   }
 
   get score(): number {
-    this._calculateScore();
     return this.formatingScore + this.codestyleScore + this.typingScore
   }
 
@@ -26,19 +26,11 @@ export default class PyCheckReport {
   get hasMajorProblems(): boolean {
     for (const k of Object.keys(this.files)) {
       const f = this.files[k];
-      if (f.flake8Violations.size > 0 || f.pyrightErrors.size > 0) {
+      if (f.flake8Violations.length > 0 || f.pyrightErrors.length > 0) {
         return true
       }
     }
     return false;
-  }
-
-  get numBlackViolations(): number {
-    let n = 0;
-    Object.values(this.files).forEach((f) => {
-      n += f.blackViolations.size;
-    });
-    return n
   }
 
   print() {
@@ -58,30 +50,37 @@ export default class PyCheckReport {
     if (isVerbose) {
       for (const k of Object.keys(this.files)) {
         const file = this.files[k];
-        for (const v of file.blackViolations) {
-          console.log("   " + v.filepath)
+        if (file.hasBlackViolations) {
+          console.log("   " + file.filepath)
         }
       }
     }
   }
 
-  private _calculateScore() {
+  calculateScore() {
+    this.codestyleScore = 60;
+    this.typingScore = 30;
+    let numBlackViolations = 0;
     for (const k of Object.keys(this.files)) {
       const file = this.files[k];
       if (file.hasFlake8Violations) {
-        this._decrementCodestyleViolations(file.flake8Violations.size);
+        this._decrementCodestyleViolations(file.flake8Violations.length);
       }
       if (file.hasPyrightViolations) {
-        this._decrementTypingViolations(file.pyrightErrors.size);
+        this._decrementTypingViolations(file.pyrightErrors.length);
+      }
+      if (file.hasBlackViolations) {
+        numBlackViolations += 1;
       }
     }
-    this.formatingScore = this._calcFormatingScore(this.numBlackViolations);
+    this.numBlackViolations = numBlackViolations;
+    this.formatingScore = this._calcFormatingScore(numBlackViolations);
     if (this.disableTyping) {
       this.typingScore = 0;
     }
   }
 
-  private _colorizeScore(score: number): string {
+  _colorizeScore(score: number): string {
     let s = score.toString();
     if (score <= 50) {
       s = colors.c50(s);
@@ -97,7 +96,7 @@ export default class PyCheckReport {
     return s;
   }
 
-  private _calcFormatingScore(numViolations: number): number {
+  _calcFormatingScore(numViolations: number): number {
     //console.log("NV", numViolations, "/ T:", this.totalFilesBlackProcessed)
     if (numViolations === 0) {
       return 10
