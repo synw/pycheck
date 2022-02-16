@@ -1,6 +1,6 @@
 {
   "name": "pycheck",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "An opinionated code quality checker for Python",
   "main": "bin/index.js",
   "license": "MIT",
