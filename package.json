@@ -1,6 +1,6 @@
 {
   "name": "pycheck",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "description": "An opinionated code quality checker for Python",
   "main": "bin/index.js",
   "license": "MIT",
@@ -18,13 +18,15 @@
     "build": "tsc -p ."
   },
   "dependencies": {
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "global": "^4.4.0",
+    "pycheck": "^0.5.1"
   },
   "devDependencies": {
     "@types/node": "^16.9.1",
+    "ts-node": "^10.2.1",
     "tslib": "^2.3.1",
-    "typescript": "^4.4.3",
-    "ts-node": "^10.2.1"
+    "typescript": "^4.4.3"
   },
   "files": [
     "bin"
