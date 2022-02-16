@@ -14,7 +14,14 @@ export function readConf(basePath: string): [boolean, Record<string, Record<stri
   return [hasConf, conf]
 }
 
-export function readPyrightConf(path: string): Record<string, any> {
+export function readPyrightConf(path: string): { ok: boolean, data: Record<string, any> } {
   let rawdata = fs.readFileSync(path);
-  return JSON.parse(rawdata.toString());
+  const res = { ok: false, data: {} };
+  try {
+    res.data = JSON.parse(rawdata.toString());
+    res.ok = true;
+  } catch (e) {
+    console.warn("Error parsing pyright config file", path, ", skipping")
+  }
+  return res;
 }

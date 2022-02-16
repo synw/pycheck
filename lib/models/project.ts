@@ -236,13 +236,14 @@ export default class Project {
       this.hasPyrightConf = true;
       // read exclusion rules
       const filename = this.basePath + "pyrightconfig.json";
-      const pconf = readPyrightConf(filename);
-      //console.log("PCONF", pconf)
-      if ("exclude" in pconf) {
-        if (this.isDebug) {
-          console.log("Excluding dirs", pconf.exclude, "from custom pyright conf")
+      const { ok, data } = readPyrightConf(filename);
+      if (ok) {
+        if ("exclude" in data) {
+          if (this.isDebug) {
+            console.log("Excluding dirs", data.exclude, "from custom pyright conf")
+          }
+          this.pyrightExcludeDirs = data.exclude
         }
-        this.pyrightExcludeDirs = pconf.exclude
       }
       return filename
     }
