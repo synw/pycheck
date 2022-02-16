@@ -190,7 +190,7 @@ export default class Project {
       args.push(`--max-line-length=${maxLineLength}`)
     }
     if (configFile) {
-      const confPath = this.basePath + "/" + configFile
+      const confPath = this.basePath + configFile
       args.push(`--config=${confPath}`)
     }
     if (this.isDebug) {
@@ -230,14 +230,18 @@ export default class Project {
       return p + "/conf/presets/" + this.preset + "/pyrightconfig.json"
     }
     if (this.files.has("pyrightconfig.json")) {
-      //console.log("Custom pyright conf found")
+      if (this.isDebug) {
+        console.log("Custom pyright conf found")
+      }
       this.hasPyrightConf = true;
       // read exclusion rules
       const filename = this.basePath + "pyrightconfig.json";
       const pconf = readPyrightConf(filename);
       //console.log("PCONF", pconf)
       if ("exclude" in pconf) {
-        //console.log("EX OK", pconf.exclude)
+        if (this.isDebug) {
+          console.log("Excluding dirs", pconf.exclude, "from custom pyright conf")
+        }
         this.pyrightExcludeDirs = pconf.exclude
       }
       return filename
