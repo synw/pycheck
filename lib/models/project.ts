@@ -6,7 +6,7 @@ import BlackViolation from "./black";
 import PyCheckFileReport from "./file";
 import PyCheckReport from "./report";
 import { PyrightViolation } from "./pyright";
-import { readConf } from "../conf";
+import { readConf, readPyrightConf } from "../conf";
 import presets from "../conf/presets";
 import PyCheckExclusionRules from "./rules";
 
@@ -21,6 +21,7 @@ export default class Project {
   packages: Set<string> = new Set();
   pyrightConfig = this.basePath + "pyrightconfig.json";
   hasPyrightConf = false;
+  pyrightExcludeDirs = new Array<string>();
   exclusionRules = new PyCheckExclusionRules();
   report: PyCheckReport;
 
@@ -51,8 +52,8 @@ export default class Project {
     }
     const proj = new Project(p, name, dirs, files, disableTyping, isDebug);
     let confPath = proj.basePath;
-    console.log("PRESET", preset);
-    console.log("LIBPATH", libPath);
+    //console.log("PRESET", preset);
+    //console.log("LIBPATH", libPath);
     if (preset) {
       if (!presets.includes(preset)) {
         throw new Error(`Unknown preset ${preset}`);
@@ -82,6 +83,9 @@ export default class Project {
     //console.log("Packages:", packages)
     const violations = new Set<PyrightViolation>();
     for (const p of this.packages) {
+      if (this.pyrightExcludeDirs.includes(p)) {
+        continue
+      }
       const cmd = "pyright";
       const args = ["--outputjson", "--lib", "-p", this.pyrightConfig, `${this.basePath}${p}`]
       if (this.isDebug) {
@@ -226,8 +230,17 @@ export default class Project {
       return p + "/conf/presets/" + this.preset + "/pyrightconfig.json"
     }
     if (this.files.has("pyrightconfig.json")) {
+      //console.log("Custom pyright conf found")
       this.hasPyrightConf = true;
-      return this.basePath + "pyrightconfig.json"
+      // read exclusion rules
+      const filename = this.basePath + "pyrightconfig.json";
+      const pconf = readPyrightConf(filename);
+      //console.log("PCONF", pconf)
+      if ("exclude" in pconf) {
+        //console.log("EX OK", pconf.exclude)
+        this.pyrightExcludeDirs = pconf.exclude
+      }
+      return filename
     }
     return p + "/conf/presets/default/pyrightconfig.json"
   }
