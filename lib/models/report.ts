@@ -111,7 +111,7 @@ export default class PyCheckReport {
     return Math.round(rawScore);
   }
 
-  private _decrementCodestyleViolations(numViolations: number) {
+  _decrementCodestyleViolations(numViolations: number) {
     let s = this.codestyleScore;
     if (this.codestyleScore > 0) {
       let n = numViolations * 2;
@@ -127,7 +127,7 @@ export default class PyCheckReport {
     this.codestyleScore = s;
   }
 
-  private _decrementTypingViolations(numViolations: number) {
+  _decrementTypingViolations(numViolations: number) {
     let s = this.typingScore;
     if (this.codestyleScore > 0) {
       let n = numViolations;
