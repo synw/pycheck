@@ -4,7 +4,7 @@ import PyCheckFileReport from "./file";
 
 export default class PyCheckReport {
   files: Record<string, PyCheckFileReport> = {};
-  formatingScore = 10;
+  formattingScore = 10;
   codestyleScore = 60;
   typingScore = 30;
   totalFilesBlackProcessed = 0;
@@ -16,7 +16,7 @@ export default class PyCheckReport {
   }
 
   get score(): number {
-    return this.formatingScore + this.codestyleScore + this.typingScore
+    return this.formattingScore + this.codestyleScore + this.typingScore
   }
 
   get hasProblems(): boolean {
@@ -35,7 +35,7 @@ export default class PyCheckReport {
 
   print() {
     console.log(`Code score: ${chalk.bold(this._colorizeScore(this.score) + '/100')}`);
-    console.log(`  - Formating: ${this.formatingScore}/10`);
+    console.log(`  - Formatting: ${this.formattingScore}/10`);
     console.log(`  - Codestyle: ${this.codestyleScore}/60`);
     if (this.disableTyping) {
       const extra = this.disableTyping ? " (disabled)" : "";
@@ -74,7 +74,7 @@ export default class PyCheckReport {
       }
     }
     this.numBlackViolations = numBlackViolations;
-    this.formatingScore = this._calcFormatingScore(numBlackViolations);
+    this.formattingScore = this._calcFormatingScore(numBlackViolations);
     if (this.disableTyping) {
       this.typingScore = 0;
     }

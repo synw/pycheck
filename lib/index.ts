@@ -47,7 +47,7 @@ async function main() {
     console.log(`Using preset ${preset}`)
   }
   // black checks
-  console.log("Checking formating with Black ...")
+  console.log("Checking formatting with Black ...")
   await proj.black();
   // flake 8 checks
   console.log("Checking codestyle with Flake8 ...")
