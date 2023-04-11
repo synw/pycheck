@@ -59,7 +59,58 @@ Example with options:
 pycheck -s --untyped
 ```
 
-Example output:
+It is possible to declare a preset in the `setup.cfg` file in your project instead
+of using a command line flag:
+
+```ini
+[pycheck]
+preset = django
+```
+
+## Ignore options
+
+### Pyright
+
+To ignore files in Pyright declare the list in a `pyrightconfig.json` file at the root
+of your project:
+
+```json
+{
+  "exclude": [
+    "build",
+    "dist"
+  ]
+}
+```
+
+### Flake
+
+To ignore files in Flake8 declare a section in your `setup.cfg` file:
+
+```ini
+[flake8]
+max-line-length = 88
+exclude = .git,.venv,build,__pycache__,*/migrations/*
+```
+
+### Black
+
+By default the exclude list for Black will use the one of Flake if declared. To
+disable this behavior, in `setup.cfg`:
+
+```ini
+[pycheck]
+black-ignore = disabled
+```
+
+To provide a custom regex ignore string to Black:
+
+```ini
+[pycheck]
+black-ignore = '\\.git|\\.venv|build|__pycache__|\\*/migrations/\\*'
+```
+
+## Example output:
 
 ```
 Using preset untyped

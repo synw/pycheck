@@ -1,12 +1,6 @@
 import { execute } from "./execute";
 import { flakeIgnore } from "../const";
 
-async function pwd(): Promise<string> {
-  const lines = await execute(`pwd`);
-  //console.log("PWD res", lines)
-  return String(lines[0])
-}
-
 async function lsl(dirpath: string): Promise<Record<string, Set<string>>> {
   const lines = await execute(`ls -l ${dirpath}`);
   //console.log("LSL res", lines.length, lines)
@@ -44,4 +38,4 @@ async function findPackages(dirpath: string, dircontent: Set<string>): Promise<S
   return new Set<string>(lines)
 }*/
 
-export { lsl, pwd, findPackages };
+export { lsl, findPackages };
