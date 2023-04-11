@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 import Project from "./models/project";
-import { pwd } from "./commands";
 import { argv } from "process";
+import { readSetupConfig } from "./conf/setup";
 
 async function main() {
   //console.log("Args", process.argv)
@@ -39,8 +39,17 @@ async function main() {
       }
     }
   } else {
-    dirpath = await pwd();
+    dirpath = process.cwd()
   }
+  // read conf
+  const conf = readSetupConfig(dirpath + "/setup.cfg");
+  //console.log("CONF", conf);
+  if (!preset) {
+    if (conf.preset) {
+      preset = conf.preset
+    }
+  }
+  // create project
   const proj = await Project.fromFolder(dirpath, disableTyping, isDebug, preset);
   console.log("Project", (proj.name));
   if (preset) {
@@ -48,7 +57,7 @@ async function main() {
   }
   // black checks
   console.log("Checking formatting with Black ...")
-  await proj.black();
+  await proj.black(conf.blackignore ?? undefined);
   // flake 8 checks
   console.log("Checking codestyle with Flake8 ...")
   await proj.flake8();

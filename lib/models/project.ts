@@ -1,7 +1,7 @@
 import Flake8Violation from "./flake";
 import { execute } from "../commands/execute";
 import { flakeIgnore, libDir } from "../const";
-import { findPackages, lsl, pwd } from "../commands";
+import { findPackages, lsl } from "../commands";
 import BlackViolation from "./black";
 import PyCheckFileReport from "./file";
 import PyCheckReport from "./report";
@@ -38,7 +38,7 @@ export default class Project {
   static async fromFolder(dirpath: string, disableTyping: boolean, isDebug: boolean = false, preset?: string, libPath?: string): Promise<Project> {
     let path = dirpath;
     if (dirpath === ".") {
-      path = await pwd();
+      path = process.cwd();
     }
     if (path.endsWith("/")) {
       path = path.slice(0, -1)
@@ -123,10 +123,15 @@ export default class Project {
     return violations;
   }
 
-  async black(): Promise<Set<BlackViolation>> {
+  async black(excludeRegex?: string): Promise<Set<BlackViolation>> {
     const violations = new Set<BlackViolation>();
-    const exclude = `--extend-exclude='/*\/migrations/*|setup.py'`
-    const args = ["--check", "--skip-string-normalization", exclude, this.basePath];
+    let exclude: string;
+    let args = ["--check", "--skip-string-normalization"];
+    if (excludeRegex) {
+      exclude = `--extend-exclude='${excludeRegex}`;
+      args.push(exclude)
+    }
+    args.push(this.basePath);
     const cmd = "black";
     if (this.isDebug) {
       console.log(cmd, args.join(" "))
