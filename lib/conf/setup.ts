@@ -12,8 +12,17 @@ function regexifyList(str: Array<string>): string {
 }
 
 function readSetupConfig(filePath: string): { blackignore: string | null, preset: string | null } {
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const config = ini.parse(fileContent);
+  let config: Record<string, any> = {};
+  try {
+    const fileContent = fs.readFileSync(filePath, 'utf-8');
+    config = ini.parse(fileContent)
+  } catch (error: any) {
+    if (error.code === 'ENOENT') {
+      return { blackignore: null, preset: null }
+    } else {
+      throw error
+    }
+  }
   const res: { blackignore: string | null, preset: string | null } = { blackignore: null, preset: null }
   let getBlackIgnoreFromFlake = true;
   if (config.pycheck) {
