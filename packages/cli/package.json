@@ -1,7 +1,7 @@
 {
-  "name": "pycheck",
-  "version": "0.6.1",
-  "description": "An opinionated code quality checker for Python",
+  "name": "@pycheck/cli",
+  "version": "0.7.0",
+  "description": "An opinionated code quality checker for Python, terminal client",
   "main": "bin/index.js",
   "license": "MIT",
   "repository": {
@@ -34,5 +34,9 @@
   "bin": {
     "pycheck": "bin/index.js"
   },
-  "preferGlobal": true
+  "preferGlobal": true,
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  }
 }

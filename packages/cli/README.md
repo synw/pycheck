@@ -1,5 +1,7 @@
 # Pycheck
 
+[![npm package](https://img.shields.io/npm/v/@pycheck/cli)](https://www.npmjs.com/package/@pycheck/cli)
+
 An opinionated code quality checker for Python. Pycheck runs some code checking
 tools, shows the problems and generates a note for the code. Checks:
 
@@ -7,20 +9,7 @@ tools, shows the problems and generates a note for the code. Checks:
 - **Codestyle** with Flake8
 - **Typing** with Pyright
 
-<div align="center">
-<img src="doc/img/screenshot1.png" alt="" />
-</div>
-
-## Packages
-
-| Version | Name | Description |
-| --- | --- | --- |
-| [![package](https://img.shields.io/npm/v/@pycheck/cli)](https://www.npmjs.com/package/@pycheck/cli) | [@pycheck/cli](https://www.npmjs.com/package/@pycheck/cli) | The terminal client |
-| [![package](https://img.shields.io/npm/v/@pycheck/ui)](https://www.npmjs.com/package/@pycheck/ui) | [@pycheck/ui](https://www.npmjs.com/package/@pycheck/ui) | The in browser user interface |
-
-## Terminal client
-
-### Install
+## Install
 
 **Requirements**: to have the base tools installed: [Black](https://pypi.org/project/black/), 
 [Flake8](https://pypi.org/project/flake8/) and [Pyright](https://pypi.org/project/pyright/):
@@ -40,7 +29,7 @@ npm install -g @pycheck/cli
 
 This way you can run `pycheck` in any project directory
 
-### Run
+## Run
 
 To run Pycheck vs any python directory:
 
@@ -57,7 +46,7 @@ Available options:
 - `--debug`: print the commands
 - `--disable-typing`: an option to not run the Pyright checks, just Flake and Black
 
-### Presets
+## Presets
 
 Some presets options are available for the level of checks:
 
@@ -78,9 +67,9 @@ of using a command line flag:
 preset = django
 ```
 
-### Ignore options
+## Ignore options
 
-#### Pyright
+### Pyright
 
 To ignore files in Pyright declare the list in a `pyrightconfig.json` file at the root
 of your project:
@@ -94,7 +83,7 @@ of your project:
 }
 ```
 
-#### Flake
+### Flake
 
 To ignore files in Flake8 declare a section in your `setup.cfg` file:
 
@@ -104,7 +93,7 @@ max-line-length = 88
 exclude = .git,.venv,build,__pycache__,*/migrations/*
 ```
 
-#### Black
+### Black
 
 By default the exclude list for Black will use the one of Flake if declared. To
 disable this behavior, in `setup.cfg`:
@@ -121,7 +110,7 @@ To provide a custom regex ignore string to Black:
 black-ignore = '\\.git|\\.venv|build|__pycache__|\\*/migrations/\\*'
 ```
 
-### Example output:
+## Example output:
 
 ```
 Using preset untyped
@@ -162,50 +151,3 @@ Code score: 68/100
   - Codestyle: 44/60
   - Typing: 24/30
 ```
-
-## In browser user interface
-
-### Install
-
-```bash
-yarn global add @pycheck/ui
-# or 
-npm install -g @pycheck/ui
-```
-
-### Run
-
-```bash
-cd my/python/project
-pycheckui
-```
-
-Open `localhost:5143`
-
-### Database
-
-By default it will create a `.pycheck.db` file in the running directory (a Sqlite database to store history). To change this
-behavior you can provide a database path:
-
-```bash
-# absolute path
-pycheckui --db=/path/to/pycheck.db
-# relative path: relative to the running directory
-pycheckui --db=path/to/pycheck.db
-```
-
-It is possible to use only one database for all projects with this flag
-
-## More Screenshots
-
-### History
-
-<div align="center">
-<img src="doc/img/screenshot2.png" alt="" />
-</div>
-
-### Package versions
-
-<div align="center">
-<img src="doc/img/screenshot3.png" alt="" />
-</div>

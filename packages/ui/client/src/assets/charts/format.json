@@ -1,0 +1,182 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.6.1.json",
+  "config": {
+    "view": {
+      "continuousHeight": 300,
+      "continuousWidth": 300
+    }
+  },
+  "data": {
+    "name": "data-f0667bcdba1e8aa38318ba8467536697"
+  },
+  "datasets": {
+    "data-f0667bcdba1e8aa38318ba8467536697": [
+      {
+        "id": 1,
+        "formattingScorePercent": 10,
+        "codestyleScore": 16,
+        "typingScore": 24,
+        "totalFilesBlackProcessed": 0,
+        "numBlackViolations": 0,
+        "score": 50
+      },
+      {
+        "id": 2,
+        "formattingScorePercent": 10,
+        "codestyleScore": 16,
+        "typingScore": 24,
+        "totalFilesBlackProcessed": 0,
+        "numBlackViolations": 0,
+        "score": 50
+      }
+    ]
+  },
+  "height": 120,
+  "layer": [
+    {
+      "encoding": {
+        "x": {
+          "axis": {
+            "labels": false
+          },
+          "field": "id",
+          "title": null,
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "formattingScorePercent",
+          "scale": {
+            "zero": false
+          },
+          "title": null,
+          "type": "quantitative"
+        }
+      },
+      "mark": {
+        "color": {
+          "gradient": "linear",
+          "stops": [
+            {
+              "color": "white",
+              "offset": 0
+            },
+            {
+              "color": "black",
+              "offset": 1
+            }
+          ],
+          "x1": 1,
+          "x2": 1,
+          "y1": 1,
+          "y2": 0
+        },
+        "line": {
+          "color": "lightgrey"
+        },
+        "point": true,
+        "type": "area"
+      }
+    },
+    {
+      "encoding": {
+        "color": {
+          "field": "degree",
+          "legend": null,
+          "type": "nominal"
+        },
+        "x": {
+          "axis": {
+            "labels": false
+          },
+          "field": "id",
+          "title": null,
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "formattingScorePercent",
+          "scale": {
+            "zero": false
+          },
+          "title": null,
+          "type": "quantitative"
+        }
+      },
+      "mark": {
+        "type": "line"
+      },
+      "transform": [
+        {
+          "as": [
+            "id",
+            "1"
+          ],
+          "method": "poly",
+          "on": "id",
+          "order": 1,
+          "regression": "formattingScorePercent"
+        },
+        {
+          "as": [
+            "degree",
+            "formattingScorePercent"
+          ],
+          "fold": [
+            "1"
+          ]
+        }
+      ]
+    },
+    {
+      "encoding": {
+        "color": {
+          "field": "degree",
+          "legend": null,
+          "type": "nominal"
+        },
+        "x": {
+          "field": "id",
+          "title": null,
+          "type": "quantitative",
+          "axis": {
+            "grid": false,
+            "labels": false,
+            "ticks": false
+          }
+        },
+        "y": {
+          "field": "formattingScorePercent",
+          "scale": {
+            "zero": false
+          },
+          "title": null,
+          "type": "quantitative"
+        }
+      },
+      "mark": {
+        "type": "line"
+      },
+      "transform": [
+        {
+          "as": [
+            "id",
+            "3"
+          ],
+          "method": "poly",
+          "on": "id",
+          "order": 3,
+          "regression": "formattingScorePercent"
+        },
+        {
+          "as": [
+            "degree",
+            "formattingScorePercent"
+          ],
+          "fold": [
+            "3"
+          ]
+        }
+      ]
+    }
+  ],
+  "width": 600
+}
