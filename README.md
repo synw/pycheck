@@ -196,6 +196,15 @@ pycheckui --db=path/to/pycheck.db
 
 It is possible to use only one database for all projects with this flag
 
+### Editor
+
+Configure your editor command to open some files directly from the ui. Use the settings
+button in the bottom left corner:
+
+<div align="center">
+<img src="doc/img/settings.png" alt="" />
+</div>
+
 ## More Screenshots
 
 ### History
