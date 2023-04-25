@@ -189,7 +189,7 @@ export default class Project {
     const args = [
       this.basePath,
       `--extend-exclude=${flakeIgnore.join(',')}`,
-      "--format='%(path)s|%(row)d,%(col)d|%(code)s|%(text)s'"
+      "--format='%(path)s|%(col)d,%(row)d|%(code)s|%(text)s'"
     ];
     if (maxLineLength) {
       args.push(`--max-line-length=${maxLineLength}`)
