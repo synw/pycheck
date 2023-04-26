@@ -1,19 +1,9 @@
+import { PyCheckBaseScoreContract, PyCheckFileReportContract } from "@pycheck/types";
+
 interface PythonPackage {
   pipName: string;
   packageName: string;
   version: string;
-}
-
-/** @type  "default" | "django" | "package" */
-type SettingType = "default" | "django" | "package";
-
-interface DjangoSettingValue {
-  value: string;
-  type: SettingType;
-}
-
-interface DjangoSettings {
-  all: Record<string, DjangoSettingValue>;
 }
 
 /** @type  closed" | "scanning" | "opened */
@@ -26,37 +16,18 @@ interface FilesystemEntry {
   type: FileType;
 }
 
-interface ServerLogLine {
-  raw: string;
-  text: string;
-  method: string;
-  url: string;
-  status: number;
-  isStatic: boolean;
-}
-
 interface PyProject {
   path: string;
   title: string;
   // paths
-  managePyPath: string;
   pythonPath: string;
   pipPath: string;
   pythonVersion: string;
   // state
-  serverRuns: boolean;
   state: ProjectState;
-  // consoles
-  serverOutput: Array<ServerLogLine>;
-  testOutput: Array<ServerLogLine>;
-  cmdsOutput: Array<ServerLogLine>;
   // parsed values
-  settings: DjangoSettings;
-  djangoApps: Array<string>;
-  externalApps: Array<string>;
   pipPackages: Record<string, string>;
   pythonPackages: Array<PythonPackage>;
-  makeFileCommands: Array<string>;
 }
 
 type ViewsType = "Infos" | "Analysis" | "History";
@@ -71,63 +42,23 @@ interface AnalysisResult {
   typingScore: number;
 }
 
-interface BlackViolation {
-  filepath: string;
-  diff: string;
-}
-
-interface Flake8Violation {
-  filepath: string;
-  code: string;
-  message: string;
-  line: number;
-  col: number;
-}
-
-type Severity = 'error' | 'warning' | 'information';
-
-interface PyrightViolation {
-  filepath: string;
-  message: string;
-  startLine: number;
-  startCol: number;
-  endLine: number;
-  endCol: number;
-  severity: Severity;
-  rule: string;
-}
-
-interface PyCheckFileReport {
-  filepath: string;
-  blackViolations: Array<BlackViolation>;
-  flake8Violations: Array<Flake8Violation>;
-  pyrightErrors: Array<PyrightViolation>;
-  pyrightWarnings: Array<PyrightViolation>;
-  pyrightInfos: Array<PyrightViolation>;
-}
-
-interface PyCheckBaseReport {
+interface PyCheckBaseReport extends PyCheckBaseScoreContract {
   lastRun: number;
   timestamp: number;
   date: string;
   lastRunDate: string;
-  formattingScore: number;
-  codestyleScore: number;
-  typingScore: number;
   formattingScorePercent: number;
   codestyleScorePercent: number;
   typingScorePercent: number;
 }
 
 interface PyCheckReport extends PyCheckBaseReport {
-  files: Record<string, PyCheckFileReport>;
+  files: Record<string, PyCheckFileReportContract>;
 }
 
 interface PyCheckHistoryReport extends PyCheckBaseReport {
   id: number;
-  numBlackViolations: number;
   score: number;
-  totalFilesBlackProcessed: number;
 }
 
 interface ChangeHistory {
@@ -140,11 +71,9 @@ interface ChangeHistory {
 export {
   PyProject,
   ViewsType,
-  ServerLogLine,
   FilesystemEntry,
   AnalysisResult,
   PyCheckReport,
-  PyCheckFileReport,
   AnalysisViewsType,
   ChangeHistory,
   PyCheckHistoryReport

@@ -24,6 +24,7 @@ export class AnalyzeProcessor {
   state = reactive({
     isAnalyzing: false,
     analysisStep: { step: 0 } as Record<string, number>,
+    typingProgress: new Array<string>(),
   });
   lastRun: Date = new Date();
   firstRun: Date = new Date();
@@ -78,6 +79,7 @@ export class AnalyzeProcessor {
     this.codestyleScore.score = 0;
     this.typingScore.score = 0;
     this.setStep({ step: 0 });
+    this.state.typingProgress = ["/"];
     this.state.isAnalyzing = true;
   }
 

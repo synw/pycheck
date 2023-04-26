@@ -1,8 +1,9 @@
 import chalk from 'chalk';
 import { colors } from "../const";
 import PyCheckFileReport from "./file";
+import type { PyCheckReportContract } from '@pycheck/types';
 
-export default class PyCheckReport {
+export default class PyCheckReport implements PyCheckReportContract {
   files: Record<string, PyCheckFileReport> = {};
   formattingScore = 10;
   codestyleScore = 60;

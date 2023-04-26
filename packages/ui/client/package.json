@@ -1,6 +1,6 @@
 {
   "name": "@pycheck/uiclient",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -26,6 +26,7 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
+    "@pycheck/types": "^0.3.0",
     "@iconify/json": "^2.1.26",
     "@snowind/plugin": "0.4.0",
     "@tailwindcss/forms": "^0.5.0",

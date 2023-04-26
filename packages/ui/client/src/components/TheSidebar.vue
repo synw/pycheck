@@ -5,7 +5,7 @@
         <div class="mr-2 truncate max-w-[14rem] text-xl font-semibold capitalize">
           {{ state.project.title }}&nbsp;</div>
         <div class="text-2xl font-extrabold">
-          <span v-if="!state.isAnalyzing" :class="analyze.scoreCss.value">{{ analyze.score }}</span>
+          <span v-if="!analyze.state.isAnalyzing" :class="analyze.scoreCss.value">{{ analyze.score }}</span>
           <span class="txt-lighter" v-else>-</span>
         </div>
       </div>
@@ -98,7 +98,7 @@
 import { ref } from "vue";
 import OverlayPanel from 'primevue/overlaypanel';
 import InputText from 'primevue/inputtext';
-import { state, analyze, user, editorPath } from '@/state';
+import { state, analyze, editorPath } from '@/state';
 
 const op = ref();
 //const editorPath = ref(null);

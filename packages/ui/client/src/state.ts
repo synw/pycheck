@@ -13,7 +13,7 @@ const user = new User();
 const state = reactive(
   {
     isReady: false,
-    project: { serverRuns: false } as PyProject,
+    project: {} as PyProject,
     report: {} as PyCheckReport,
     history: {} as ChangeHistory,
     rawHistory: new Array<PyCheckHistoryReport>,
@@ -65,4 +65,12 @@ function updateHistory(history: Array<PyCheckHistoryReport>) {
   }
 }
 
-export { user, state, editorPath, subviews, initState, analyze, updateHistory }
+export {
+  user,
+  state,
+  editorPath,
+  subviews,
+  analyze,
+  initState,
+  updateHistory
+}

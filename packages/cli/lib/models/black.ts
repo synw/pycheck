@@ -1,4 +1,6 @@
-export default class BlackViolation {
+import type { BlackViolationContract } from "@pycheck/types";
+
+export default class BlackViolation implements BlackViolationContract {
   filepath: string;
   diff: string;
 

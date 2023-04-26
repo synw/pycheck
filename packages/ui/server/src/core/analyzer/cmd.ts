@@ -4,14 +4,10 @@ import * as path from "path";
 
 async function analyzeProject(dirPath: string, onProgress: (data: any) => void): Promise<PyCheckReport> {
   const { flake, pyright } = await ProjectAnalyzer.findConfig(dirPath);
-  let preset;
-  if (pyright === null) {
-    preset = "django";
-  }
   const libPath = path.join(__dirname + "../../../../node_modules/@pycheck/cli/bin");
-  const engine = await ProjectAnalyzer.create(dirPath, flake, pyright, preset, libPath);
+  const engine = await ProjectAnalyzer.create(dirPath, flake, pyright, undefined, libPath);
   await engine.runBlack();
-  engine.proj.report.calculateScore()
+  engine.proj.report.calculateScore();
   const res = {
     step: 1,
     numBlackViolations: engine.proj.report.numBlackViolations,

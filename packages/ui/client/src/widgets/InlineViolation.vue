@@ -16,17 +16,17 @@
         </div>
       </button>
       <div :class="{
-        'slide-y': true,
-        'slideup': collapse === true,
-        'slidedown': collapse === false
-      }" class="ml-8">
+          'slide-y': true,
+          'slideup': collapse === true,
+          'slidedown': collapse === false
+        }" class="ml-8">
         <template v-if="hasPyrightViolations">
           <div v-for="vio in file.pyrightErrors" class="flex flex-row pt-2 cursor-pointer">
             <div class="mr-1 text-sm txt-typing">
               <i-material-symbols:circle></i-material-symbols:circle>
             </div>
             <div @click="openFile(file.filepath, vio.endLine)">
-              Line <span class="font-bold">{{ vio.startLine }}</span>: {{ vio.message }}
+              Line <span class="font-bold">{{ vio.endLine }}</span>: {{ vio.message }}
               <span v-if="vio.rule != 'unknown'" class="txt-light">({{ vio.rule }})</span>
               <span v-if="vio.severity != 'error'"> - {{ vio.severity }}</span>
             </div>
@@ -51,13 +51,13 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { PyCheckFileReport } from '@/interfaces';
+import { PyCheckFileReportContract } from '@pycheck/types';
 import { state } from '@/state';
 import { openFile } from "@/api"
 
 const props = defineProps({
   file: {
-    type: Object as () => PyCheckFileReport,
+    type: Object as () => PyCheckFileReportContract,
     required: true
   },
   name: {

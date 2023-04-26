@@ -28,6 +28,8 @@ declare module '@vue/runtime-core' {
     'IMaterialSymbols:settingsOutlineRounded': typeof import('~icons/material-symbols/settings-outline-rounded')['default']
     'IPh:files': typeof import('~icons/ph/files')['default']
     'ISimpleIcons:adguard': typeof import('~icons/simple-icons/adguard')['default']
+    'ITeenyicons:folderOutline': typeof import('~icons/teenyicons/folder-outline')['default']
+    'ITeenyicons:folderTickOutline': typeof import('~icons/teenyicons/folder-tick-outline')['default']
     'ITeenyicons:pythonOutline': typeof import('~icons/teenyicons/python-outline')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

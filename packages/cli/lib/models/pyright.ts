@@ -1,4 +1,5 @@
-type Severity = 'error' | 'warning' | 'information';
+import type { Severity, PyrightViolationContract } from "@pycheck/types"
+
 
 interface PyrightDiagnostic {
   file: string,
@@ -17,15 +18,7 @@ interface PyrightDiagnostic {
   }
 }
 
-export interface PyrightSummary {
-  filesAnalyzed: number,
-  errorCount: number,
-  warningCount: number,
-  informationCount: number,
-  timeInSec: number
-}
-
-export class PyrightViolation {
+export class PyrightViolation implements PyrightViolationContract {
   filepath: string;
   message: string;
   startLine: number;

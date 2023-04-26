@@ -1,10 +1,10 @@
 import chalk from 'chalk';
-import BlackViolation from "./black";
 import Flake8Violation from "./flake";
 import { PyrightViolation } from "./pyright";
+import type { PyCheckFileReportContract } from '@pycheck/types';
 
 
-export default class PyCheckFileReport {
+export default class PyCheckFileReport implements PyCheckFileReportContract {
   filepath: string;
   blackViolations: boolean = false;
   flake8Violations: Array<Flake8Violation> = [];

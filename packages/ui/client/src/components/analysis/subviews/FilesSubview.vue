@@ -8,7 +8,8 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from 'vue';
-import { PyCheckFileReport, AnalysisViewsType } from '@/interfaces';
+import { AnalysisViewsType } from '@/interfaces';
+import type { PyCheckFileReportContract } from '@pycheck/types';
 import { state } from '@/state';
 import InlineViolation from '@/widgets/InlineViolation.vue';
 
@@ -19,10 +20,10 @@ const props = defineProps({
   }
 })
 
-const files = ref<Record<string, PyCheckFileReport>>({});
+const files = ref<Record<string, PyCheckFileReportContract>>({});
 
 function filter(view: AnalysisViewsType) {
-  const res: Record<string, PyCheckFileReport> = {};
+  const res: Record<string, PyCheckFileReportContract> = {};
   for (const [name, report] of Object.entries(state.report.files)) {
     switch (view) {
       case "Formating":

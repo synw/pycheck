@@ -1,4 +1,6 @@
-export default class Flake8Violation {
+import type { Flake8ViolationContract } from "@pycheck/types";
+
+export default class Flake8Violation implements Flake8ViolationContract {
   filepath: string;
   code: string;
   message: string;
