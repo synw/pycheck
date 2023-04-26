@@ -17,6 +17,7 @@ tools, shows the problems and generates a note for the code. Checks:
 | --- | --- | --- |
 | [![package](https://img.shields.io/npm/v/@pycheck/cli)](https://www.npmjs.com/package/@pycheck/cli) | [@pycheck/cli](https://www.npmjs.com/package/@pycheck/cli) | The terminal client |
 | [![package](https://img.shields.io/npm/v/@pycheck/ui)](https://www.npmjs.com/package/@pycheck/ui) | [@pycheck/ui](https://www.npmjs.com/package/@pycheck/ui) | The in browser user interface |
+| [![package](https://img.shields.io/npm/v/@pycheck/types)](https://www.npmjs.com/package/@pycheck/types) | [@pycheck/types](https://www.npmjs.com/package/@pycheck/types) | The Typescript shared data structures |
 
 ## Terminal client
 
