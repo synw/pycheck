@@ -75,8 +75,15 @@
           <small id="path-help">The command to open files to a line in the code editor. Use the {filepath} and {line}
             masks. Examples:
             <ul class="list-disc list-inside">
-              <li>Default: xdg-open {filepath}</li>
-              <li>Vscode: code --goto {filepath}:{line}:0</li>
+              <li>Default: xdg-open {filepath}&nbsp;&nbsp;<span>
+                  <button class="px-2 py-0 text-xs rounded-md btn lighter" @click="useX('xdg-open {filepath}')">Use
+                    xdg-open</button>
+                </span></li>
+              <li>Vscode: code --goto {filepath}:{line}:0&nbsp;&nbsp;<span>
+                  <button class="px-2 py-0 text-xs rounded-md btn lighter"
+                    @click="useX('code --goto {filepath}:{line}:0')">Use
+                    Vscode</button>
+                </span></li>
             </ul>
           </small>
         </div>
@@ -107,5 +114,7 @@ const toggle = (event) => {
   op.value.toggle(event);
 }
 
-
+function useX(cmd: string) {
+  editorPath.value = cmd;
+}
 </script>
