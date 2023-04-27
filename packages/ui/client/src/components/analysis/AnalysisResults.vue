@@ -2,7 +2,7 @@
   <div>
     <div class="flex flex-row w-full h-full">
       <div class="flex flex-col items-center flex-shrink-0 w-32 h-full txt-neutral">
-        <div v-if="subviews.isVisible('Files')" :class="subviews.isActive('Files') ? 'txt-primary' : ''"
+        <div v-if="subviews.isVisible('Files')" :class="subviews.isActive('Files') ? '' : 'txt-light'"
           class="flex flex-col items-center mt-8" @click="activateView('Files')">
           <div class="mr-2 text-5xl">
             <i-ph:files></i-ph:files>
@@ -10,21 +10,21 @@
           <div class="mt-2 text-lg">Files</div>
         </div>
         <div v-if="subviews.isVisible('Formating')" class="flex flex-col items-center mt-8"
-          :class="subviews.isActive('Formating') ? 'txt-primary' : ''" @click="activateView('Formating')">
+          :class="subviews.isActive('Formating') ? '' : 'txt-light'" @click="activateView('Formating')">
           <div>
             <i-ic:sharp-format-indent-decrease class="mr-2 text-4xl"></i-ic:sharp-format-indent-decrease>
           </div>
           <div class="mt-2 text-lg">Formatting</div>
         </div>
         <div v-if="subviews.isVisible('Codestyle')" class="flex flex-col items-center mt-8"
-          :class="subviews.isActive('Codestyle') ? 'txt-primary' : ''" @click="activateView('Codestyle')">
+          :class="subviews.isActive('Codestyle') ? '' : 'txt-light'" @click="activateView('Codestyle')">
           <div>
             <i-fluent:clipboard-code-24-regular class="mr-2 text-5xl"></i-fluent:clipboard-code-24-regular>
           </div>
           <div class="mt-2 text-lg">Codestyle</div>
         </div>
         <div v-if="subviews.isVisible('Typing')" class="flex flex-col items-center mt-8"
-          :class="subviews.isActive('Typing') ? 'txt-primary' : ''" @click="activateView('Typing')">
+          :class="subviews.isActive('Typing') ? '' : 'txt-light'" @click="activateView('Typing')">
           <div>
             <i-simple-icons:adguard class="mr-2 text-4xl"></i-simple-icons:adguard>
           </div>
