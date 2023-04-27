@@ -33,7 +33,7 @@ async function runAnalysis() {
 async function openFile(file: string, line: number) {
   console.log("Open", file);
   const cmd = editorPath.value.replace("{filepath}", file).replace("{line}", line.toString());
-  const res = await api.get(`/api/edit?cmd=${cmd}`);
+  const res = await api.get(`/api/edit?cmd=${encodeURIComponent(cmd)}`);
   //console.log(res)
 }
 
