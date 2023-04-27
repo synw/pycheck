@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-row">
     <sw-tab v-for="view in subviews.visibleViews.value" :subviews="subviews" :is-active="subviews.active.value == view"
-      class="px-4 py-2 border border-l-0 cursor-pointer border-light dark:border-lighter" :class="subviews.active.value == view ?
-        ['border-b-0  cursor-auto text-foreground dark:text-foreground-dark']
-        : ['txt-neutral']" @click="activate(view)">
+      class="px-4 py-2 border border-l-0 cursor-pointer bord-lighter" :class="subviews.active.value == view ?
+          ['border-b-0 bord-lighter cursor-auto text-foreground dark:text-foreground-dark']
+          : ['txt-neutral']" @click="activate(view)">
       <template v-if="view == 'Analysis'">
         <div class="flex flex-row items-center">
           <div>
@@ -33,8 +33,7 @@
       </template>
       <template v-else>{{ view }}</template>
     </sw-tab>
-    <div
-      class="flex flex-row items-center justify-end flex-grow h-full border-b border-light dark:border-light-dark txt-light ">
+    <div class="flex flex-row items-center justify-end flex-grow h-full border-b bord-lighter txt-light ">
       <div>
         <button class="text-sm btn hover:lighter" @click="_runAnalysis()" :disabled="analyze.state.isAnalyzing">
           <i-material-symbols:play-arrow-outline class="text-2xl"

@@ -1,5 +1,5 @@
 <template>
-  <div class="">
+  <div>
     <div class="flex flex-col p-3 h-[calc(100%_-_2.5rem)]">
       <div class="flex flex-row items-center space-x-2 items">
         <div class="mr-2 truncate max-w-[14rem] text-xl font-semibold capitalize">
@@ -13,7 +13,7 @@
         <template v-if="state.isReady">
           <!-- div><span class="txt-light">Score</span>: <span class="font-extrabold"
             :class="analyze.scoreCss.value">{{ analyze.score }}</span></div -->
-          <div class="flex flex-col p-3 space-y-2 border rounded-sm shadow">
+          <div class="flex flex-col p-3 space-y-2 border rounded-sm shadow bord-lighter">
             <div class="flex flex-row items-center space-x-2">
               <div class="text-sm txt-format" v-if="analyze.formattingScore.score != 10">
                 <i-material-symbols:circle></i-material-symbols:circle>
@@ -62,12 +62,12 @@
       </div>
     </div>
     <div
-      class="flex flex-row items-center justify-center h-10 text-xl border-t cursor-pointer txt-lighter hover:txt-light"
+      class="flex flex-row items-center justify-center h-10 text-xl border-t cursor-pointer bord-lighter txt-lighter hover:txt-light"
       @click="toggle($event)">
       <i-material-symbols:settings-outline-rounded></i-material-symbols:settings-outline-rounded>&nbsp;<span
         class="text-lg">Settings</span>
     </div>
-    <overlay-panel ref="op">
+    <overlay-panel ref="op" class="background">
       <div class="p-3 w-[32rem] flex flex-col">
         <div class="text-xl">Editor command</div>
         <div class="flex flex-col mt-2 space-x-2">
@@ -75,12 +75,19 @@
           <small id="path-help">The command to open files to a line in the code editor. Use the {filepath} and {line}
             masks. Examples:
             <ul class="list-disc list-inside">
-              <li>Default: xdg-open {filepath}</li>
-              <li>Vscode: code --goto {filepath}:{line}:0</li>
+              <li>Default: xdg-open {filepath}&nbsp;&nbsp;<span>
+                  <button class="px-2 py-0 text-xs rounded-md btn lighter" @click="useX('xdg-open {filepath}')">Use
+                    xdg-open</button>
+                </span></li>
+              <li>Vscode: code --goto {filepath}:{line}:0&nbsp;&nbsp;<span>
+                  <button class="px-2 py-0 text-xs rounded-md btn lighter"
+                    @click="useX('code --goto {filepath}:{line}:0')">Use
+                    Vscode</button>
+                </span></li>
             </ul>
           </small>
         </div>
-        <!--div class="h-[0.10rem] lighter my-3"></div>
+        <!-- div class="h-[0.10rem] lighter my-3"></div>
         <div class="pr-5 text-lg cursor-pointer" @click="user.toggleDarkMode()">
           <template v-if="!user.isDarkMode.value">
             <i-fa-solid:moon></i-fa-solid:moon>&nbsp;Toggle dark mode
@@ -98,7 +105,7 @@
 import { ref } from "vue";
 import OverlayPanel from 'primevue/overlaypanel';
 import InputText from 'primevue/inputtext';
-import { state, analyze, editorPath } from '@/state';
+import { state, user, analyze, editorPath } from '@/state';
 
 const op = ref();
 //const editorPath = ref(null);
@@ -107,5 +114,7 @@ const toggle = (event) => {
   op.value.toggle(event);
 }
 
-
+function useX(cmd: string) {
+  editorPath.value = cmd;
+}
 </script>

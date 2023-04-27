@@ -219,3 +219,22 @@ button in the bottom left corner:
 <div align="center">
 <img src="doc/img/screenshot3.png" alt="" />
 </div>
+
+## Development
+
+To run in development mode: run the backend in a Python project:
+
+```bash
+cd a/python/project
+ts-node --transpile-only ~/path/to/pycheck/packages/ui/server/src/index.ts
+```
+
+Run the frontend: in the pycheck directory
+
+```bash
+cd path/to/pycheck
+cd packages/ui/client
+yarn dev
+```
+
+Open `localhost:5173` to get frontend. It will autoreload when the frontend code changes

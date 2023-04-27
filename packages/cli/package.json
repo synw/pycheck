@@ -1,6 +1,6 @@
 {
   "name": "@pycheck/cli",
-  "version": "0.7.2",
+  "version": "0.7.3",
   "description": "An opinionated code quality checker for Python, terminal client",
   "main": "bin/index.js",
   "license": "MIT",

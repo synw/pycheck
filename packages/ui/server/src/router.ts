@@ -64,8 +64,9 @@ router.get('/api/run_analysis', async (ctx) => {
 
 router.get('/api/edit', async (ctx) => {
   const data = ctx.request.query;
-  console.log("Opening", data["cmd"]);
-  api.openInEditor(`${data["cmd"]}`);
+  const cmd = decodeURIComponent(`${data["cmd"]}`);
+  console.log("Opening", cmd);
+  api.openInEditor(cmd);
   ctx.status = 204;
   ctx.type = 'application/json';
 });

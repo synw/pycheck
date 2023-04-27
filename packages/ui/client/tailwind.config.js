@@ -20,7 +20,7 @@ module.exports = {
         c70: colors.emerald[200],
         c90: colors.green[400],
         c100: colors.green[600],
-        
+
       },
       semanticColors: {
         format: {
@@ -53,13 +53,23 @@ module.exports = {
             txt: colors.white
           }
         },
+        primary: {
+          light: {
+            bg: colors.cyan[700],
+            txt: colors.white
+          },
+          dark: {
+            bg: colors.cyan[700],
+            txt: colors.neutral[100]
+          }
+        },
         light: {
           light: {
             bg: colors.gray[500],
             txt: colors.white
           },
           dark: {
-            bg: colors.gray[600],
+            bg: colors.gray[400],
             txt: colors.gray[800]
           }
         },
@@ -69,7 +79,7 @@ module.exports = {
             txt: colors.gray[800]
           },
           dark: {
-            bg: colors.neutral[700],
+            bg: colors.neutral[600],
             txt: colors.white
           }
         },
