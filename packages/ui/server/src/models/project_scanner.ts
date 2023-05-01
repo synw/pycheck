@@ -1,4 +1,4 @@
-import { Emo } from "../packages/emo";
+import { Emo } from "emosd";
 import { PyProject } from "./pyproject";
 import { api } from "../core/api";
 import PythonPackage from "./package";

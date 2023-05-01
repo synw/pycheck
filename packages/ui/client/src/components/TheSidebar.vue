@@ -87,8 +87,8 @@
             </ul>
           </small>
         </div>
-        <!-- div class="h-[0.10rem] lighter my-3"></div>
-        <div class="pr-5 text-lg cursor-pointer" @click="user.toggleDarkMode()">
+        <div class="h-[0.10rem] lighter my-3"></div>
+        <!-- div class="pr-5 text-lg cursor-pointer" @click="user.toggleDarkMode()">
           <template v-if="!user.isDarkMode.value">
             <i-fa-solid:moon></i-fa-solid:moon>&nbsp;Toggle dark mode
           </template>

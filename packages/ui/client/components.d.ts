@@ -16,6 +16,8 @@ declare module '@vue/runtime-core' {
     'IClarity:dashboardOutlineBadged': typeof import('~icons/clarity/dashboard-outline-badged')['default']
     'IEosIcons:bubbleLoading': typeof import('~icons/eos-icons/bubble-loading')['default']
     'IEosIcons:loading': typeof import('~icons/eos-icons/loading')['default']
+    'IFaSolid:moon': typeof import('~icons/fa-solid/moon')['default']
+    'IFaSolid:sun': typeof import('~icons/fa-solid/sun')['default']
     'IFluent:clipboardCode24Regular': typeof import('~icons/fluent/clipboard-code24-regular')['default']
     'IIc:sharpFormatIndentDecrease': typeof import('~icons/ic/sharp-format-indent-decrease')['default']
     'IIcomoonFree:info': typeof import('~icons/icomoon-free/info')['default']
