@@ -1,6 +1,6 @@
 <template>
   <div class="flex flex-row w-64 h-24 border shadow">
-    <div class="flex items-center justify-center h-full text-3xl border-r basis-1/2 bg-slate-50 bord-lighter">
+    <div class="flex items-center justify-center h-full text-3xl border-r basis-1/2 superlight bord-lighter">
       <div v-if="total == 10">
         <div class="flex card justify-content-center">
           <Knob v-model="_score" valueTemplate="{value}%" :value-color="color" :size="80" disabled />

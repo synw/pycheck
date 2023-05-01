@@ -1,4 +1,4 @@
-import { Emo } from "../packages/emo";
+import { Emo } from "emosd";
 import { api } from "../core/api";
 import { ProjectState } from "../interfaces";
 import ServerLogLine from "./server_log";

@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@snowind/header": "^0.0.8",
-    "@snowind/state": "^0.0.3",
+    "@snowind/plugin": "^0.5.0",
+    "@snowind/state": "^0.1.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.26.1",
     "restmix": "^0.1.0",
@@ -26,9 +27,8 @@
     "ws": "^8.13.0"
   },
   "devDependencies": {
-    "@pycheck/types": "^0.3.0",
     "@iconify/json": "^2.1.26",
-    "@snowind/plugin": "0.4.0",
+    "@pycheck/types": "^0.3.0",
     "@tailwindcss/forms": "^0.5.0",
     "@types/node": "^18.15.11",
     "@vitejs/plugin-vue": "^4.0.0",

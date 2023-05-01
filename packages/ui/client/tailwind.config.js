@@ -53,46 +53,16 @@ module.exports = {
             txt: colors.white
           }
         },
-        primary: {
+        superlight: {
           light: {
-            bg: colors.cyan[700],
-            txt: colors.white
+            bg: colors.slate[50],
+            txt: colors.black,
           },
           dark: {
-            bg: colors.cyan[700],
-            txt: colors.neutral[100]
+            bg: colors.slate[950],
+            txt: colors.neutral[100],
           }
-        },
-        light: {
-          light: {
-            bg: colors.gray[500],
-            txt: colors.white
-          },
-          dark: {
-            bg: colors.gray[400],
-            txt: colors.gray[800]
-          }
-        },
-        lighter: {
-          light: {
-            bg: colors.slate[200],
-            txt: colors.gray[800]
-          },
-          dark: {
-            bg: colors.neutral[600],
-            txt: colors.white
-          }
-        },
-        semilight: {
-          light: {
-            bg: colors.slate[400],
-            txt: colors.gray[800]
-          },
-          dark: {
-            bg: colors.neutral[500],
-            txt: colors.white
-          }
-        },
+        }
       }
     }
   }

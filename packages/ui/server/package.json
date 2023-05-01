@@ -20,6 +20,7 @@
     "@koa/cors": "^4.0.0",
     "@pycheck/cli": "^0.7.3",
     "chalk": "^4.1.2",
+    "emosd": "^0.4.0",
     "koa": "^2.14.1",
     "koa-router": "^12.0.0",
     "koa-static": "^5.0.0",
